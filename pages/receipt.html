@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+        #billContainer { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .bill-header { text-align: center; border-bottom: 2px solid #2563eb; margin-bottom: 20px; padding-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+        table th, table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        table th { background-color: #2563eb; color: white; }
+        .total-section { text-align: right; margin-top: 20px; border-top: 2px solid #eee; padding-top: 10px; }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            #billContainer { box-shadow: none; border: none; width: 100%; max-width: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="billContainer">
+    <div class="bill-header">
+        <h2>Official Receipt</h2>
+        <p>Thank you for shopping with us!</p>
+    </div>
+
+    <div class="info-row">
+        <span><b>Order ID:</b> <span id="orderIdText"></span></span>
+        <span><b>Date:</b> <span id="currentDateText"></span></span>
+    </div>
+    <div class="info-row">
+        <span><b>Payment Method:</b> <span id="paymentMethodText"></span></span>
+        <span style="color: #2563eb;"><b>Estimated Delivery:</b> <span id="deliveryDateText"></span></span>
+    </div>
+
+    <table id="billTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product ID</th>
+                <th>Price (₹)</th>
+                <th>Qty</th>
+                <th>Total (₹)</th>
+            </tr>
+        </thead>
+        <tbody id="receiptTableBody">
+            </tbody>
+    </table>
+
+    <div class="total-section">
+        <h3>Total Amount Paid: ₹<span id="totalAmountText">0</span></h3>
+    </div>
+
+    <div class="no-print" style="text-align:center; margin-top:40px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">Download PDF</button>
+        <button onclick="continueShopping()" style="padding: 10px 20px; background: #059669; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Continue Shopping</button>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        // Updated: Hum 'lastOrderDetails' se poora object nikal rahe hain
+        let lastOrder = JSON.parse(localStorage.getItem("lastOrderDetails"));
+        let purchasedItems = JSON.parse(localStorage.getItem("lastOrderItems")) || [];
+
+        if (lastOrder) {
+            // Details fill karein (Ab ₹0 nahi aayega kyunki data lastOrder.total se aa raha hai)
+            document.getElementById("orderIdText").innerText = lastOrder.orderId;
+            document.getElementById("totalAmountText").innerText = lastOrder.total;
+            document.getElementById("deliveryDateText").innerText = lastOrder.deliveryDate;
+            document.getElementById("paymentMethodText").innerText = lastOrder.paymentMethod;
+            document.getElementById("currentDateText").innerText = lastOrder.orderDate || new Date().toLocaleDateString();
+        } else {
+            // Fallback agar direct access kiya jaye
+            document.getElementById("orderIdText").innerText = "N/A";
+        }
+
+        let tbody = document.getElementById("receiptTableBody");
+        tbody.innerHTML = "";
+
+        if (purchasedItems.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Your bill is empty. Please shop first!</td></tr>`;
+        } else {
+            purchasedItems.forEach(item => {
+                let row = `<tr>
+                    <td>${item.name}</td>
+                    <td>P${item.id}</td>
+                    <td>₹${item.price}</td>
+                    <td>${item.qty}</td>
+                    <td>₹${item.price * item.qty}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+    };
+
+    function continueShopping() {
+        // Bill ka temporary data saaf karein
+        localStorage.removeItem("lastOrderItems");
+        localStorage.removeItem("lastOrderDetails");
+        
+        window.location.href = "index.html";
+    }
+</script>
+</body>
+</html>

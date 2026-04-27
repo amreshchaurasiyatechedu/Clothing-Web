@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .payment-section, .address-section {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .address-section input, .address-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        .payment-section h3, .address-section h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .payment-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .payment-option input { margin-right: 10px; }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .delivery-msg {
+            color: #2563eb;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 10px;
+            background: #eff6ff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 class="cart-title">Your Cart</h2>
+
+<div class="cart-container">
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="cart-summary">
+        <div class="address-section">
+            <h3>Delivery Details</h3>
+            <input type="text" id="custName" placeholder="Enter Full Name" required>
+            <input type="tel" id="custPhone" placeholder="Enter Phone Number" required>
+            <textarea id="custAddress" placeholder="Enter Full Delivery Address" rows="3" required></textarea>
+        </div>
+        <div class="payment-section">
+            <h3>Select Payment Method</h3>
+            <label class="payment-option">
+                <input type="radio" name="pay-method" value="UPI (GPay/PhonePe)" checked> UPI (GPay/PhonePe)
+            </label>
+            <label class="payment-option">
+                <input type="radio" name="pay-method" value="Debit/Credit Card"> Debit/Credit Card
+            </label>
+            <label class="payment-option">
+                <input type="radio" name="pay-method" value="Cash on Delivery"> Cash on Delivery
+            </label>
+        </div>
+
+        <h3 id="totalAmountText">Total Amount: ₹0</h3>
+        <button onclick="buy()" class="buy-btn">Buy Now</button>
+    </div>
+</div>
+
+<div id="successPopup" class="popup">
+    <div class="popup-box">
+        <h2>🎉 Purchase Successful!</h2>
+        <p>Your order has been placed successfully.</p>
+        <p><b>Order ID:</b> <span id="orderId"></span></p>
+        <p id="deliveryText" class="delivery-msg"></p> 
+        <button onclick="closePopup()" style="padding: 10px 20px; cursor: pointer;">View Your Bill</button>
+    </div>
+</div>
+
+<script src="../assets/js/script.js"></script>
+</body>
+</html>

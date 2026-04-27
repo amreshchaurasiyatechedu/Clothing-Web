@@ -1,0 +1,637 @@
+/* ================== GLOBAL STYLES ================== */
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0; /* Changed from 20px to 0 for full-width navbar */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* ================== NAVBAR STYLES (NEW) ================== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: #ffffff;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    gap: 20px;
+    align-items: center; /* Profile logo center karne ke liye */
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-left a:hover {
+    color: #2563eb;
+}
+
+.nav-right .cart-link {
+    text-decoration: none;
+    background: #213a70;
+    color: rgb(248, 248, 248);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.nav-right .cart-link:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+
+/* ================== STORE HEADING (Animated & Floating) ================== */
+.store-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(90deg, #2563eb, #9333ea, #2563eb);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: moveGradient 4s linear infinite, floatTitle 3s ease-in-out infinite;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+@keyframes moveGradient {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+}
+
+/* Floating animation */
+@keyframes floatTitle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ================== PROFILE LOGO & DROPDOWN (NEWLY ADDED) ================== */
+.profile-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-logo {
+    width: 40px;
+    height: 40px;
+    background: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu {
+    display: none; /* JS se toggle hoga */
+    position: absolute;
+    top: 55px;
+    left: 0;
+    background: white;
+    min-width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    z-index: 1001;
+    overflow: hidden;
+    padding: 10px 0;
+    border: 1px solid #e2e8f0;
+}
+
+.dropdown-menu.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #1e293b;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+}
+
+.dropdown-menu .logout {
+    color: #ef4444;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* ================== SEARCH BAR ================== */
+.search-container {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 14px 25px;
+    border: 2px solid #e2e8f0;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    transition: 0.3s;
+    background: white;
+}
+
+.search-bar:focus {
+    border-color: #2563eb;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+}
+
+/* ================== PRODUCT CARDS ================== */
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px 5%;
+}
+
+.product {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    border: 1px solid #edf2f7;
+    overflow: hidden;
+}
+
+.product:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* HEART (FAVORITE) BUTTON */
+.fav-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    color: #cbd5e1;
+    z-index: 10;
+}
+
+.fav-btn.active {
+    color: #ef4444 !important;
+    transform: scale(1.1);
+}
+
+.product h3 {
+    text-align: center;
+    color: #1e293b;
+    font-size: 18px;
+    margin: 15px 0 5px 0;
+}
+
+.images {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.images img {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid #f1f5f9;
+    transition: 0.3s;
+}
+
+.images img:hover {
+    transform: scale(1.1);
+    border-color: #2563eb;
+}
+
+.highlight {
+    background-color: #fef08a;
+    color: #854d0e;
+    font-weight: bold;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+/* ================== BUTTONS ================== */
+.action-btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.action-btns button {
+    flex: 1;
+    padding: 10px 5px;
+    font-size: 13px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+button:disabled {
+    background-color: #cbd5e1 !important;
+    cursor: not-allowed;
+}
+
+.buy-now-btn {
+    background-color: #059669;
+    color: white;
+}
+
+.buy-now-btn:hover:not(:disabled) {
+    background-color: #047857;
+}
+
+/* ================== CART PAGE LAYOUT (NEWLY ADDED) ================== */
+.cart-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.address-section, .payment-section {
+    background: #6a4141;
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.address-section h3, .payment-section h3 {
+    margin-top: 0;
+    color: #1e293b;
+    border-left: 5px solid #2563eb;
+    padding-left: 15px;
+}
+
+.address-section input, .address-section textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.payment-option {
+    display: block;
+    padding: 12px;
+    border: 1px solid #364d65;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.payment-option:hover {
+    background: #eff6ff;
+    border-color: #1e5bdf;
+}
+
+/* ================== POPUP STYLING (NEWLY ADDED) ================== */
+.popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-box {
+    background: white;
+    padding: 40px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ================== LOGIN PAGE ================== */
+/* ================== GLOBAL STYLES ================== */
+/* Note: Global styles are already defined above, keeping these specific to login page body class */
+
+body.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+/* ================== LOGIN CONTAINER ================== */
+.login-container {
+    width: 100%;
+    max-width: 400px; 
+    min-height: 600px;
+    padding: 40px 25px;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), 
+                url("roadster01.png") center/cover no-repeat;
+    
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    
+    animation: fadeSlideUp 0.6s ease;
+}
+
+h2 { font-size: 26px; color: #000; margin-bottom: 5px; }
+
+.login-subtitle {
+    font-size: 14px;
+    color: #222;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+/* ================== INPUTS & BUTTONS ================== */
+.login-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.login-group input {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+}
+
+/* Common Button Style */
+button {
+    width: fit-content;
+    min-width: 100px;
+    padding: 12px 25px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s, background 0.3s;
+    font-size: 14px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.primary-btn { background-color: #2563eb; }
+.google-btn { background: #db4437; width: 85%; max-width: 280px; }
+.microsoft-btn { background: #000000; width: 85%; max-width: 280px; }
+
+.divider {
+    margin: 20px 0;
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.social-login {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Animation */
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 850px) {
+    .cart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .nav-left {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .store-title {
+        order: 1;
+    }
+    
+    .nav-right {
+        order: 3;
+        width: 100%;
+    }
+    
+    .nav-right .cart-link {
+        justify-content: center;
+    }
+
+    .product {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+/* Fade in animation for dropdown */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================== ADD TO CART BLACK BUTTON (NEW) ================== */
+.action-btns button:first-child:not(.buy-now-btn) {
+    background-color: #000000 !important;
+    color: white !important;
+}
+
+.action-btns button:first-child:not(.buy-now-btn):hover {
+    background-color: #050505 !important;
+}
+
+
+
+/* Status Colors */
+.available {
+    color: #059669 !important; /* Deep Green */
+    font-weight: bold;
+}
+
+.not-available {
+    color: #ef4444 !important; /* Bright Red */
+    font-weight: bold;
+}
+
+/* Disabled/Unavailable Button Styling */
+button:disabled, 
+.product .not-available ~ .action-btns button {
+    background-color: #73737d !important; /* Faded Grey background */
+    color: #000000 !important; /* Faded Text */
+    cursor: not-allowed;
+    transform: none !important; /* Hover effect hatane ke liye */
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1;
+}
+
+
+
+
+/* ================== FINAL FIX FOR CART BUTTONS ================== */
+
+/* 1. Direct target on all Buy/Bill buttons in Cart */
+button.buy-now-btn, 
+.cart-container button, 
+.payment-section button,
+#checkout-btn,
+.view-bill-btn {
+    background-color: #0bc83e !important; /* Your specific Green */
+    color: #ffffff !important;           /* Pure White text */
+    opacity: 1 !important;               /* No fading */
+    visibility: visible !important;      /* Force visibility */
+    display: block !important;           /* Ensure it's not hidden */
+    padding: 12px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    text-shadow: none !important;        /* Clear any weird shadows */
+}
+
+/* 2. Target specific "View Bill" button text */
+button:contains("View"), 
+button:contains("Bill") {
+    background-color: #0bc83e !important;
+}
+
+/* 3. Button hover effect */
+button.buy-now-btn:hover, 
+.payment-section button:hover {
+    background-color: #09a834 !important;
+    transform: scale(1.03);
+}
+
+/* 4. Agar button disabled hai toh uska style (For Not Available items) */
+button:disabled {
+    background-color: #cbd5e1 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* ================== POPUP BILL BUTTON FINAL FIX ================== */
+
+/* Popup ke andar jitne bhi buttons hain unhe target karein */
+.popup-box button, 
+.popup button,
+[onclick*="viewBill"], 
+#view-bill-btn {
+    background-color: #0bc83e !important; /* Green Color */
+    color: #ffffff !important;           /* Pure White Text */
+    opacity: 1 !important;               /* Force fully visible */
+    visibility: visible !important;      /* Force show */
+    display: inline-block !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    margin-top: 15px !important;
+    min-width: 150px !important;         /* Taaki button chhota na dikhe */
+    box-shadow: 0 4px 10px rgba(11, 200, 62, 0.3) !important;
+}
+
+/* Hover Effect */
+.popup-box button:hover, 
+#view-bill-btn:hover {
+    background-color: #09a834 !important;
+    transform: scale(1.05) !important;
+}
+
+/* Agar button galti se disabled state mein hai toh use bhi green dikhao */
+.popup-box button:disabled {
+    background-color: #0bc83e !important;
+    color: white !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+}

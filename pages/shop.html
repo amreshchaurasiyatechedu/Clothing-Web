@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clothing Shop</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Modern Header Layout */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-left {
+            display: flex;
+            gap: 15px;
+            flex: 1;
+            align-items: center;
+        }
+        .nav-left a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .nav-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .nav-right .cart-link {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        
+        /* Floating Animation for Store Title */
+        .store-title {
+            flex: 2;
+            text-align: center;
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+            display: inline-block;
+            animation: floatAnim 3s ease-in-out infinite;
+        }
+
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Profile Logo & Dropdown Styles */
+        .profile-container {
+            position: relative;
+            cursor: pointer;
+        }
+        .profile-logo {
+            width: 35px;
+            height: 35px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 1001;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+        }
+        .dropdown-menu a:hover {
+            background: #f0f0f0;
+        }
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        /* Existing styles preserved */
+        .action-btns {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .buy-now-btn {
+            background-color: #0bc83e !important;
+            color: rgb(255, 255, 255);
+        }
+        .highlight {
+            background-color: yellow;
+            color: black;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="profile-container" onclick="toggleDropdown()">
+            <div class="profile-logo">U</div>
+            <div id="profileDropdown" class="dropdown-menu">
+                <a href="../index.html">⚙️ Manage Account</a>
+                <a href="../index.html" style="color: red;">🚪 Logout</a>
+            </div>
+        </div>
+        <a href="../index.html">Home</a>
+    </div>
+    
+    <h2 class="store-title">Clothing Store</h2>
+    
+    <div class="nav-right">
+        <a href="cart.html" class="cart-link">Go to Cart 🛒</a>
+    </div>
+</nav>
+
+<div class="search-container">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search clothes or brand..."
+        oninput="searchProducts()" 
+        class="search-bar"
+        style="width: 50%; padding: 10px; border-radius: 20px; border: 1px solid #ccc;"
+    >
+</div>
+
+<div class="products-container" id="mainProductsContainer">
+
+<div id="adminProductsContainer"></div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P101" onclick="toggleFavorite('P101','Nike T-Shirt',999, this)">❤</button>
+    <h3>Nike T-Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/../assets/images/nike01.png" alt="Nike T-Shirt front view">
+        <img src="../assets/images/nike02.png">
+        <img src="../assets/images/nike03.png">
+    </div>
+    <p><b>Product ID:</b> P101</p>
+    <p class="brand-name"><b>Company:</b> Nike</p>
+    <p><b>Color:</b> Black</p>
+    <p><b>Price:</b> ₹999</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P101','Nike T-Shirt',999)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P101','Nike T-Shirt',999)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P102" onclick="toggleFavorite('P102','Adidas Hoodie',1799, this)">❤</button>
+    <h3>Adidas Hoodie</h3>
+    <div class="images">
+        <img src="../assets/images/adidas01.png">
+        <img src="../assets/images/adidas02.png">
+    </div>
+    <p><b>Product ID:</b> P102</p>
+    <p class="brand-name"><b>Company:</b> Adidas</p>
+    <p><b>Color:</b> Blue</p>
+    <p><b>Price:</b> ₹1799</p>
+    <p class="not-available">Not Available</p>
+    <div class="action-btns">
+        <button disabled>Add to Cart</button>
+        <button disabled class="buy-now-btn" style="background-color: gray !important;">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P103" onclick="toggleFavorite('P103','Puma Jacket',2499, this)">❤</button>
+    <h3>Puma Jacket</h3>
+    <div class="images">
+        <img src="../assets/images/puma01.png">
+        <img src="../assets/images/puma02.png">
+    </div>
+    <p><b>Product ID:</b> P103</p>
+    <p class="brand-name"><b>Company:</b> Puma</p>
+    <p><b>Color:</b> Red</p>
+    <p><b>Price:</b> ₹2499</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P103','Puma Jacket',2499)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P103','Puma Jacket',2499)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P104" onclick="toggleFavorite('P104','Reebok Track Suit',2199, this)">❤</button>
+    <h3>Reebok Track Suit</h3>
+    <div class="images">
+        <img src="../assets/images/reebok01.png">
+        <img src="../assets/images/reebok02.png">
+        <img src="../assets/images/reebok03.png">
+    </div>
+    <p><b>Product ID:</b> P104</p>
+    <p class="brand-name"><b>Company:</b> Reebok</p>
+    <p><b>Color:</b> Grey</p>
+    <p><b>Price:</b> ₹2199</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P104','Reebok Track Suit',2199)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P104','Reebok Track Suit',2199)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P105" onclick="toggleFavorite('P105','Levis Jeans',1999, this)">❤</button>
+    <h3>Levi’s Jeans</h3>
+    <div class="images">
+        <img src="../assets/images/levis01.png">
+        <img src="../assets/images/levis02.png">
+        <img src="../assets/images/levis03.png">
+    </div>
+    <p><b>Product ID:</b> P105</p>
+    <p class="brand-name"><b>Company:</b> Levi’s</p>
+    <p><b>Color:</b> Dark Blue</p>
+    <p><b>Price:</b> ₹1999</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P105','Levis Jeans',1999)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P105','Levis Jeans',1999)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P106" onclick="toggleFavorite('P106','Zara Shirt',1499, this)">❤</button>
+    <h3>Zara Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/zara01.png">
+        <img src="../assets/images/zara02.png">
+        <img src="../assets/images/zara03.png">
+    </div>
+    <p><b>Product ID:</b> P106</p>
+    <p class="brand-name"><b>Company:</b> Zara</p>
+    <p><b>Color:</b> White</p>
+    <p><b>Price:</b> ₹1499</p>
+    <p class="not-available">Not Available</p>
+    <div class="action-btns">
+        <button disabled>Add to Cart</button>
+        <button disabled class="buy-now-btn" style="background-color: gray !important;">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P107" onclick="toggleFavorite('P107','H&M Sweatshirt',1299, this)">❤</button>
+    <h3>H&M Sweatshirt</h3>
+    <div class="images">
+        <img src="../assets/images/hm01.png">
+        <img src="../assets/images/hm02.png">
+        <img src="../assets/images/hm03.png">
+    </div>
+    <p><b>Product ID:</b> P107</p>
+    <p class="brand-name"><b>Company:</b> H&M</p>
+    <p><b>Color:</b> Olive</p>
+    <p><b>Price:</b> ₹1299</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P107','H&M Sweatshirt',1299)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P107','H&M Sweatshirt',1299)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P108" onclick="toggleFavorite('P108','US Polo T-Shirt',1099, this)">❤</button>
+    <h3>US Polo T-Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/uspolo01.png">
+        <img src="../assets/images/uspolo02.png">
+        <img src="../assets/images/uspolo03.png">
+    </div>
+    <p><b>Product ID:</b> P108</p>
+    <p class="brand-name"><b>Company:</b> US Polo</p>
+    <p><b>Color:</b> Navy</p>
+    <p><b>Price:</b> ₹1099</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P108','US Polo T-Shirt',1099)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P108','US Polo T-Shirt',1099)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P109" onclick="toggleFavorite('P109','Roadster Shirt',1399, this)">❤</button>
+    <h3>Roadster Casual Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/roadster01.png">
+        <img src="../assets/images/roadster02.png">
+        <img src="../assets/images/roadster03.png">
+    </div>
+    <p><b>Product ID:</b> P109</p>
+    <p class="brand-name"><b>Company:</b> Roadster</p>
+    <p><b>Color:</b> Green</p>
+    <p><b>Price:</b> ₹1399</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P109','Roadster Shirt',1399)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P109','Roadster Shirt',1399)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P110" onclick="toggleFavorite('P110','Allen Solly Blazer',3499, this)">❤</button>
+    <h3>Allen Solly Blazer</h3>
+    <div class="images">
+        <img src="../assets/images/allensolly01.png">
+        <img src="../assets/images/allensolly02.png">
+        <img src="../assets/images/allensolly03.png">
+    </div>
+    <p><b>Product ID:</b> P110</p>
+    <p class="brand-name"><b>Company:</b> Allen Solly</p>
+    <p><b>Color:</b> Brown</p>
+    <p><b>Price:</b> ₹3499</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P110','Allen Solly Blazer',3499)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P110','Allen Solly Blazer',3499)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P111" onclick="toggleFavorite('P111','GAP Hoodie',1899, this)">❤</button>
+    <h3>GAP Hoodie</h3>
+    <div class="images">
+        <img src="../assets/images/gap01.png">
+        <img src="../assets/images/gap02.png">
+        <img src="../assets/images/gap03.png">
+    </div>
+    <p><b>Product ID:</b> P111</p>
+    <p class="brand-name"><b>Company:</b> GAP</p>
+    <p><b>Color:</b> Pink</p>
+    <p><b>Price:</b> ₹1899</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P111','GAP Hoodie',1899)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P111','GAP Hoodie',1899)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P112" onclick="toggleFavorite('P112','Calvin Klein T-Shirt',1599, this)">❤</button>
+    <h3>Calvin Klein T-Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/ck01.png">
+        <img src="../assets/images/ck02.png">
+        <img src="../assets/images/ck03.png">
+    </div>
+    <p><b>Product ID:</b> P112</p>
+    <p class="brand-name"><b>Company:</b> Calvin Klein</p>
+    <p><b>Color:</b> White</p>
+    <p><b>Price:</b> ₹1599</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P112','Calvin Klein T-Shirt',1599)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P112','Calvin Klein T-Shirt',1599)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P113" onclick="toggleFavorite('P113','Peter England Shirt',1499, this)">❤</button>
+    <h3>Peter England Formal Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/peter01.png">
+        <img src="../assets/images/peter02.png">
+        <img src="../assets/images/peter03.png">
+    </div>
+    <p><b>Product ID:</b> P113</p>
+    <p class="brand-name"><b>Company:</b> Peter England</p>
+    <p><b>Color:</b> Sky Blue</p>
+    <p><b>Price:</b> ₹1499</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P113','Peter England Shirt',1499)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P113','Peter England Shirt',1499)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P114" onclick="toggleFavorite('P114','Louis Philippe Trousers',2299, this)">❤</button>
+    <h3>Louis Philippe Trousers</h3>
+    <div class="images">
+        <img src="../assets/images/lp01.png">
+        <img src="../assets/images/lp02.png">
+        <img src="../assets/images/lp03.png">
+    </div>
+    <p><b>Product ID:</b> P114</p>
+    <p class="brand-name"><b>Company:</b> Louis Philippe</p>
+    <p><b>Color:</b> Beige</p>
+    <p><b>Price:</b> ₹2299</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P114','Louis Philippe Trousers',2299)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P114','Louis Philippe Trousers',2299)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P115" onclick="toggleFavorite('P115','Van Heusen Blazer',3999, this)">❤</button>
+    <h3>Van Heusen Blazer</h3>
+    <div class="images">
+        <img src="../assets/images/van01.png">
+        <img src="../assets/images/van02.png">
+        <img src="../assets/images/van03.png">
+    </div>
+    <p><b>Product ID:</b> P115</p>
+    <p class="brand-name"><b>Company:</b> Van Heusen</p>
+    <p><b>Color:</b> Charcoal</p>
+    <p><b>Price:</b> ₹3999</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P115','Van Heusen Blazer',3999)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P115','Van Heusen Blazer',3999)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P116" onclick="toggleFavorite('P116','HRX T-Shirt',899, this)">❤</button>
+    <h3>HRX Training T-Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/hrx01.png">
+        <img src="../assets/images/hrx02.png">
+        <img src="../assets/images/hrx03.png">
+    </div>
+    <p><b>Product ID:</b> P116</p>
+    <p class="brand-name"><b>Company:</b> HRX</p>
+    <p><b>Color:</b> Grey</p>
+    <p><b>Price:</b> ₹899</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P116','HRX T-Shirt',899)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P116','HRX T-Shirt',899)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P117" onclick="toggleFavorite('P117','Wrogn Jacket',2799, this)">❤</button>
+    <h3>Wrogn Denim Jacket</h3>
+    <div class="images">
+        <img src="../assets/images/wrogn01.png">
+        <img src="../assets/images/wrogn02.png">
+        <img src="../assets/images/wrogn03.png">
+    </div>
+    <p><b>Product ID:</b> P117</p>
+    <p class="brand-name"><b>Company:</b> Wrogn</p>
+    <p><b>Color:</b> Dark Blue</p>
+    <p><b>Price:</b> ₹2799</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P117','Wrogn Jacket',2799)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P117','Wrogn Jacket',2799)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P118" onclick="toggleFavorite('P118','Flying Machine Jeans',1899, this)">❤</button>
+    <h3>Flying Machine Jeans</h3>
+    <div class="images">
+        <img src="../assets/images/fm01.png">
+        <img src="../assets/images/fm02.png">
+        <img src="../assets/images/fm03.png">
+    </div>
+    <p><b>Product ID:</b> P118</p>
+    <p class="brand-name"><b>Company:</b> Flying Machine</p>
+    <p><b>Color:</b> Light Blue</p>
+    <p><b>Price:</b> ₹1899</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P118','Flying Machine Jeans',1899)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P118','Flying Machine Jeans',1899)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P119" onclick="toggleFavorite('P119','Being Human T-Shirt',1299, this)">❤</button>
+    <h3>Being Human T-Shirt</h3>
+    <div class="images">
+        <img src="../assets/images/being01.png">
+        <img src="../assets/images/being02.png">
+        <img src="../assets/images/being03.png">
+    </div>
+    <p><b>Product ID:</b> P119</p>
+    <p class="brand-name"><b>Company:</b> Being Human</p>
+    <p><b>Color:</b> Maroon</p>
+    <p><b>Price:</b> ₹1299</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P119','Being Human T-Shirt',1299)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P119','Being Human T-Shirt',1299)">Buy Now</button>
+    </div>
+</div>
+
+<div class="product">
+    <button class="fav-btn" data-id="P120" onclick="toggleFavorite('P120','Monte Carlo Sweater',2099, this)">❤</button>
+    <h3>Monte Carlo Sweater</h3>
+    <div class="images">
+        <img src="../assets/images/mc01.png">
+        <img src="../assets/images/mc02.png">
+        <img src="../assets/images/mc03.png">
+    </div>
+    <p><b>Product ID:</b> P120</p>
+    <p class="brand-name"><b>Company:</b> Monte Carlo</p>
+    <p><b>Color:</b> Mustard</p>
+    <p><b>Price:</b> ₹2099</p>
+    <p class="available">Available</p>
+    <div class="action-btns">
+        <button onclick="addToCart('P120','Monte Carlo Sweater',2099)">Add to Cart</button>
+        <button class="buy-now-btn" onclick="directBuy('P120','Monte Carlo Sweater',2099)">Buy Now</button>
+    </div>
+</div>
+</div>
+
+<script>
+// --- Admin Se Add Kiye Gaye Products Load Karein ---
+function loadAdminProducts() {
+    const container = document.getElementById("adminProductsContainer");
+    const localProducts = JSON.parse(localStorage.getItem("storeProducts")) || [];
+    
+    // Pehle clear karein (refresh ke liye)
+    container.innerHTML = "";
+
+    localProducts.forEach(p => {
+        container.innerHTML += `
+            <div class="product">
+                <button class="fav-btn" onclick="toggleFavorite('${p.id}','${p.name}',${p.price}, this)">❤</button>
+                <h3>${p.name}</h3>
+                <div class="images">
+                    <img src="${p.image}" alt="${p.name}">
+                </div>
+                <p><b>Product ID:</b> ${p.id}</p>
+                <p class="brand-name"><b>Company:</b> ${p.brand}</p>
+                <p><b>Price:</b> ₹${p.price}</p>
+                <p class="available">Available</p>
+                <div class="action-btns">
+                    <button onclick="addToCart('${p.id}','${p.name}',${p.price})">Add to Cart</button>
+                    <button class="buy-now-btn" onclick="directBuy('${p.id}','${p.name}',${p.price})">Buy Now</button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Toggle Dropdown Function
+function toggleDropdown() {
+    document.getElementById("profileDropdown").classList.toggle("active");
+}
+
+// Close dropdown when clicking outside
+window.onclick = function(event) {
+    if (!event.target.closest('.profile-container')) {
+        let dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (let i = 0; i < dropdowns.length; i++) {
+            let openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('active')) {
+                openDropdown.classList.remove('active');
+            }
+        }
+    }
+}
+
+// Logic for Real-time Highlight Search preserved
+function searchProducts() {
+    let input = document.getElementById('searchInput').value.toLowerCase();
+    let products = document.getElementsByClassName('product');
+
+    for (let i = 0; i < products.length; i++) {
+        let titleElement = products[i].querySelector('h3');
+        let brandElement = products[i].querySelector('.brand-name');
+        
+        let originalTitle = titleElement.innerText;
+        let originalBrand = brandElement.innerText;
+
+        titleElement.innerHTML = originalTitle;
+        brandElement.innerHTML = originalBrand;
+
+        if (input.trim() === "") {
+            products[i].style.display = "";
+            continue;
+        }
+
+        let titleText = originalTitle.toLowerCase();
+        let brandText = originalBrand.toLowerCase();
+
+        if (titleText.includes(input) || brandText.includes(input)) {
+            products[i].style.display = ""; 
+            
+            let regex = new RegExp(`(${input})`, "gi");
+            if(titleText.includes(input)) {
+                titleElement.innerHTML = originalTitle.replace(regex, "<span class='highlight'>$1</span>");
+            }
+            if(brandText.includes(input)) {
+                brandElement.innerHTML = originalBrand.replace(regex, "<span class='highlight'>$1</span>");
+            }
+        } else {
+            products[i].style.display = "none";
+        }
+    }
+}
+
+// Page load par admin products load karein
+window.addEventListener('load', loadAdminProducts);
+</script>
+
+<script src="../assets/js/script.js"></script>
+
+</body>
+</html>
